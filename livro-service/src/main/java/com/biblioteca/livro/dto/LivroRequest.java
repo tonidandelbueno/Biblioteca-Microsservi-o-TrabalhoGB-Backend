@@ -1,0 +1,4 @@
+package com.biblioteca.livro.dto;
+
+public record LivroRequest(String titulo, String autor, String isbn) {
+}
