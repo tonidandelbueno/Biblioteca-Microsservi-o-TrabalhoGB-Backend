@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.biblioteca.usuario.client.EmprestimoClient;
 import com.biblioteca.usuario.dto.LoginRequest;
 import com.biblioteca.usuario.dto.TokenResponse;
 import com.biblioteca.usuario.dto.UsuarioRequest;
@@ -20,11 +21,13 @@ public class UsuarioService {
 	private final UsuarioRepository repository;
 	private final PasswordEncoder passwordEncoder;
 	private final JwtService jwtService;
-
-	public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+	private final EmprestimoClient emprestimoClient;
+	
+	public UsuarioService(UsuarioRepository repository, PasswordEncoder passwordEncoder, JwtService jwtService,EmprestimoClient emprestimoClient) {
 		this.repository = repository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtService = jwtService;
+		this.emprestimoClient = emprestimoClient;
 	}
 
 	public UsuarioResponse cadastrar(UsuarioRequest req) {
@@ -60,9 +63,18 @@ public class UsuarioService {
 		u.setSenha(passwordEncoder.encode(req.senha()));
 		return UsuarioResponse.from(repository.save(u));
 	}
-
+	//novo excluir garante só user sem emprestimos(ativo ou devolvido) para manter registro
 	public void excluir(Long id) {
-		repository.delete(buscarEntidade(id));
+	    Usuario usuario = buscarEntidade(id);
+	    boolean possuiEmprestimos =
+	        emprestimoClient.existeEmprestimoParaUsuario(id);
+	    if (possuiEmprestimos) {
+	        throw new ResponseStatusException(
+	            HttpStatus.CONFLICT,
+	            "Usuário possui empréstimos registrados"
+	        );
+	    }
+	    repository.delete(usuario);
 	}
 
 	public TokenResponse login(LoginRequest req) {

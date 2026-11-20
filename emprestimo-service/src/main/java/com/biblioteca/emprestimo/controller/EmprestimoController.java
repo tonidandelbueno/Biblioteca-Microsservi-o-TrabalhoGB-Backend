@@ -54,4 +54,10 @@ public class EmprestimoController {
 	public void excluir(@PathVariable Long id) {
 		service.excluir(id);
 	}
+		
+	@GetMapping("/usuario/{usuarioId}/existe")
+	public boolean existeEmprestimoParaUsuario(
+	        @PathVariable Long usuarioId) {
+	    return service.existeEmprestimoParaUsuario(usuarioId);
+	}
 }

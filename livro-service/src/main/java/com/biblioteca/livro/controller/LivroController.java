@@ -1,5 +1,6 @@
 package com.biblioteca.livro.controller;
 
+import java.util.UUID;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -54,9 +55,20 @@ public class LivroController {
 	public void excluir(@PathVariable Long id) {
 		service.excluir(id);
 	}
-
-	@PutMapping("/{id}/disponibilidade")
-	public LivroResponse alterarDisponibilidade(@PathVariable Long id, @RequestParam boolean valor) {
-		return service.alterarDisponibilidade(id, valor);
+	
+	//liberar e reservar para emprestimos
+	@PutMapping("/{id}/reservar")
+	public LivroResponse reservar(
+	        @PathVariable Long id,
+	        @RequestParam UUID chave) {
+	    return service.reservar(id, chave);
+	}
+	
+	@PutMapping("/{id}/liberar")
+	public LivroResponse liberar(
+	        @PathVariable Long id,
+	        @RequestParam UUID chave) {
+	    return service.liberar(id, chave);
 	}
 }
+

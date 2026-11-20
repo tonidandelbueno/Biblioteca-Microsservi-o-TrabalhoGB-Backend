@@ -1,5 +1,6 @@
 package com.biblioteca.emprestimo.model;
 
+import java.util.UUID;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
@@ -18,7 +19,8 @@ public class Emprestimo {
 
 	private Long usuarioId;
 	private Long livroId;
-
+	private UUID chaveReserva;
+	
 	private LocalDate dataEmprestimo;
 	private LocalDate dataPrevistaDevolucao;
 	private LocalDate dataDevolucao;
@@ -83,5 +85,12 @@ public class Emprestimo {
 
 	public void setStatus(StatusEmprestimo status) {
 		this.status = status;
+	}
+	public UUID getChaveReserva() {
+	    return chaveReserva;
+	}
+	
+	public void setChaveReserva(UUID chaveReserva) {
+	    this.chaveReserva = chaveReserva;
 	}
 }

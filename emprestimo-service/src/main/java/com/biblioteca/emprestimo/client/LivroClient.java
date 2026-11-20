@@ -1,5 +1,7 @@
 package com.biblioteca.emprestimo.client;
 
+import java.util.UUID;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
@@ -31,13 +33,47 @@ public class LivroClient {
 		}
 	}
 
-	public void alterarDisponibilidade(Long id, boolean disponivel) {
-		try {
-			restTemplate.put(URL + "{id}/disponibilidade?valor={valor}", null, id, disponivel);
-		} catch (HttpClientErrorException.NotFound e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Livro não encontrado");
-		} catch (RestClientException | IllegalStateException e) {
-			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "livro-service indisponível");
-		}
+	public void reservar(Long id, UUID chave) {
+	    try {
+	        restTemplate.put(
+	            URL + "{id}/reservar?chave={chave}",null,id,chave);
+	    } catch (HttpClientErrorException.NotFound e) {
+	        throw new ResponseStatusException(
+	            HttpStatus.NOT_FOUND,
+	            "Livro não encontrado"
+	            );
+	    } catch (HttpClientErrorException.Conflict e) {
+	        throw new ResponseStatusException(
+	            HttpStatus.CONFLICT,
+	            "Livro indisponível (já emprestado)"
+	            );
+	    } catch (RestClientException | IllegalStateException e) {
+	        throw new ResponseStatusException(
+	            HttpStatus.SERVICE_UNAVAILABLE,
+	            "livro-service indisponível"
+	            );
+	    }
+	}
+
+	public void liberar(Long id, UUID chave) {
+	    try {
+	        restTemplate.put(
+	            URL + "{id}/liberar?chave={chave}",null,id,chave);
+	    } catch (HttpClientErrorException.NotFound e) {
+	        throw new ResponseStatusException(
+	            HttpStatus.NOT_FOUND,
+	            "Livro não encontrado"
+	            );
+	    } catch (HttpClientErrorException.Conflict e) {
+	        throw new ResponseStatusException(
+	            HttpStatus.CONFLICT,
+	            "Reserva não corresponde ao livro"
+	            );
+	    } catch (RestClientException | IllegalStateException e) {
+	        throw new ResponseStatusException(
+	            HttpStatus.SERVICE_UNAVAILABLE,
+	            "livro-service indisponível"
+	            );
+	    }
 	}
 }

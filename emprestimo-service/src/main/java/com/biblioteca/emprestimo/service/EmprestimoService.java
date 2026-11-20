@@ -1,5 +1,6 @@
 package com.biblioteca.emprestimo.service;
 
+import java.util.UUID;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,7 +14,6 @@ import com.biblioteca.emprestimo.client.LivroClient;
 import com.biblioteca.emprestimo.client.UsuarioClient;
 import com.biblioteca.emprestimo.dto.EmprestimoRequest;
 import com.biblioteca.emprestimo.dto.EmprestimoResponse;
-import com.biblioteca.emprestimo.dto.LivroDto;
 import com.biblioteca.emprestimo.model.Emprestimo;
 import com.biblioteca.emprestimo.model.StatusEmprestimo;
 import com.biblioteca.emprestimo.repository.EmprestimoRepository;
@@ -25,7 +25,7 @@ public class EmprestimoService {
 	private final UsuarioClient usuarioClient;
 	private final LivroClient livroClient;
 	private final int prazoDias;
-
+	
 	public EmprestimoService(EmprestimoRepository repository, UsuarioClient usuarioClient, LivroClient livroClient,
 			@Value("${emprestimo.prazo-dias:14}") int prazoDias) {
 		this.repository = repository;
@@ -33,52 +33,87 @@ public class EmprestimoService {
 		this.livroClient = livroClient;
 		this.prazoDias = prazoDias;
 	}
-	@Transactional
+
 	public EmprestimoResponse emprestar(EmprestimoRequest req) {
-		if (req.usuarioId() == null || req.livroId() == null) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "usuarioId e livroId são obrigatórios");
-		}
-		usuarioClient.buscar(req.usuarioId());
-		LivroDto livro = livroClient.buscar(req.livroId());
-		if (!livro.disponivel()) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Livro indisponível (já emprestado)");
-		}
-
-		Emprestimo e = new Emprestimo();
-		e.setUsuarioId(req.usuarioId());
-		e.setLivroId(req.livroId());
-		e.setDataEmprestimo(LocalDate.now());
-		e.setDataPrevistaDevolucao(LocalDate.now().plusDays(prazoDias));
-		e.setStatus(StatusEmprestimo.ATIVO);
-		Emprestimo salvo = repository.save(e);
-
-		livroClient.alterarDisponibilidade(req.livroId(), false);
-		return EmprestimoResponse.from(salvo);
+	
+	    if (req.usuarioId() == null || req.livroId() == null) {
+	        throw new ResponseStatusException(
+	            HttpStatus.BAD_REQUEST,
+	            "usuarioId e livroId são obrigatórios"
+	        );
+	    }
+	
+	    // Verifica a existência do usuário
+	    usuarioClient.buscar(req.usuarioId());
+	
+	    // Gera uma chave única para o empréstimo
+	    UUID chaveReserva = UUID.randomUUID();
+	
+	    // Reserva o livro antes de salvar o empréstimo
+	    livroClient.reservar(req.livroId(), chaveReserva);
+	
+	    Emprestimo e = new Emprestimo();
+	    e.setUsuarioId(req.usuarioId());
+	    e.setLivroId(req.livroId());
+	    e.setChaveReserva(chaveReserva);
+	    e.setDataEmprestimo(LocalDate.now());
+	    e.setDataPrevistaDevolucao(
+	        LocalDate.now().plusDays(prazoDias));
+	    e.setStatus(StatusEmprestimo.ATIVO);
+	
+	    Emprestimo salvo;
+	
+	    try {
+	        salvo = repository.saveAndFlush(e);
+	    } catch (RuntimeException erro) {
+	        // Tenta desfazer a reserva se a gravação falhar
+	        try {
+	            livroClient.liberar(req.livroId(),chaveReserva);
+	        } catch (RuntimeException falhaLiberacao) {
+	            erro.addSuppressed(falhaLiberacao);
+	        }
+	        throw erro;
+	    }
+	    return EmprestimoResponse.from(salvo);
 	}
 
 	public List<EmprestimoResponse> listar(Long usuarioId) {
 		List<Emprestimo> lista = (usuarioId == null) ? repository.findAll() : repository.findByUsuarioId(usuarioId);
 		return lista.stream().map(EmprestimoResponse::from).toList();
 	}
-
+	
+	public boolean existeEmprestimoParaUsuario(Long usuarioId) {
+        return repository.existsByUsuarioId(usuarioId);
+    }
 	public EmprestimoResponse buscar(Long id) {
 		return EmprestimoResponse.from(buscarEntidade(id));
 	}
 
+
 	@Transactional
 	public EmprestimoResponse devolver(Long id) {
-		Emprestimo e = buscarEntidade(id);
-		if (e.getStatus() == StatusEmprestimo.DEVOLVIDO) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Este empréstimo já foi devolvido");
-		}
-		e.setStatus(StatusEmprestimo.DEVOLVIDO);
-		e.setDataDevolucao(LocalDate.now());
-		Emprestimo salvo = repository.save(e);
-
-		livroClient.alterarDisponibilidade(e.getLivroId(), true);
-		return EmprestimoResponse.from(salvo);
+	
+	    Emprestimo e = repository.buscarParaDevolucao(id)
+	        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Empréstimo não encontrado"));
+	    if (e.getStatus() != StatusEmprestimo.ATIVO) {
+	        throw new ResponseStatusException(HttpStatus.CONFLICT,"Este empréstimo já foi devolvido");
+	    }
+	    if (e.getChaveReserva() == null) {
+	        throw new ResponseStatusException(HttpStatus.CONFLICT,"Empréstimo sem chave de reserva");
+	    }
+	
+	    // Libera somente a reserva correspondente
+	    livroClient.liberar(
+	        e.getLivroId(),
+	        e.getChaveReserva());
+	
+	    // Atualiza o empréstimo após a liberação
+	    e.setStatus(StatusEmprestimo.DEVOLVIDO);
+	    e.setDataDevolucao(LocalDate.now());
+	    Emprestimo salvo = repository.save(e);
+	    return EmprestimoResponse.from(salvo);
 	}
-
+	
 	public void excluir(Long id) {
 		Emprestimo e = buscarEntidade(id);
 		if (e.getStatus() == StatusEmprestimo.ATIVO) {

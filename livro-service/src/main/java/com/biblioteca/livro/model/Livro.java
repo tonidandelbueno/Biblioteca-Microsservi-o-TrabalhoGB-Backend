@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.UUID;
 
 @Entity
 public class Livro {
@@ -18,7 +19,9 @@ public class Livro {
 
 	// true = está na estante; false = esta emprestado
 	private boolean disponivel = true;
-
+	// chave para reserva unica
+	private UUID chaveReserva;
+	
 	public Livro() {
 	}
 
@@ -60,5 +63,13 @@ public class Livro {
 
 	public void setDisponivel(boolean disponivel) {
 		this.disponivel = disponivel;
+	}
+	
+	public UUID getChaveReserva() {
+	    return chaveReserva;
+	}
+	
+	public void setChaveReserva(UUID chaveReserva) {
+	    this.chaveReserva = chaveReserva;
 	}
 }

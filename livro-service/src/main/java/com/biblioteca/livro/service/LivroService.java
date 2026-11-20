@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
 import com.biblioteca.livro.dto.LivroRequest;
 import com.biblioteca.livro.dto.LivroResponse;
 import com.biblioteca.livro.model.Livro;
@@ -42,27 +43,50 @@ public class LivroService {
 	}
 
 	public LivroResponse atualizar(Long id, LivroRequest req) {
-		validar(req);
-		Livro l = buscarEntidade(id);
-		l.setTitulo(req.titulo());
-		l.setAutor(req.autor());
-		l.setIsbn(req.isbn());
-		return LivroResponse.from(repository.save(l));
+	    validar(req);
+	    int atualizados = repository.atualizarDados(
+	        id,
+	        req.titulo(),
+	        req.autor(),
+	        req.isbn()
+	    );
+	    if (atualizados == 0) {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Livro não encontrado");
+	    }
+	    return buscar(id);
 	}
 
 	public void excluir(Long id) {
-		Livro l = buscarEntidade(id);
-		if (!l.isDisponivel()) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Livro emprestado não pode ser excluído");
-		}
-		repository.delete(l);
+	    int excluidos = repository.excluirSeDisponivel(id);
+	    if (excluidos == 0) {
+	        buscarEntidade(id);
+	        throw new ResponseStatusException(HttpStatus.CONFLICT,"Livro emprestado não pode ser excluído");
+	    }
 	}
 
-	// Chamado pelo emprestimo-service ao emprestar (false) e ao devolver (true)
-	public LivroResponse alterarDisponibilidade(Long id, boolean valor) {
-		Livro l = buscarEntidade(id);
-		l.setDisponivel(valor);
-		return LivroResponse.from(repository.save(l));
+	//metodo de reserva para garantir emprestimo unico
+	public LivroResponse reservar(Long id, UUID chave) {
+	    if (chave == null) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Chave de reserva obrigatória");
+	    }
+	    int atualizados = repository.reservarSeDisponivel(id, chave);
+	    if (atualizados == 0) {
+	        buscarEntidade(id);
+	        throw new ResponseStatusException(HttpStatus.CONFLICT,"Livro indisponível (já emprestado)");
+	    }
+	    return buscar(id);
+	}
+	
+	public LivroResponse liberar(Long id, UUID chave) {
+	    if (chave == null) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Chave de reserva obrigatória");
+	    }
+	    int atualizados = repository.liberarSeReservado(id, chave);
+	    if (atualizados == 0) {
+	        buscarEntidade(id);
+	        throw new ResponseStatusException(HttpStatus.CONFLICT,"Reserva não corresponde ao livro");
+	    }
+	    return buscar(id);
 	}
 
 	private Livro buscarEntidade(Long id) {
