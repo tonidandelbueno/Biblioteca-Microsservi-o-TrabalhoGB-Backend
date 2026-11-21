@@ -21,12 +21,17 @@ public class UsuarioClient {
 	}
 
 	public UsuarioDto buscar(Long id) {
-		try {
-			return restTemplate.getForObject(URL + id, UsuarioDto.class);
-		} catch (HttpClientErrorException.NotFound e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
-		} catch (RestClientException | IllegalStateException e) {
-			throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "usuario-service indisponível");
-		}
+	    try {
+	        UsuarioDto usuario = restTemplate.getForObject(URL + id, UsuarioDto.class);
+	        if (usuario == null) {
+	            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "Resposta vazia do usuario-service");
+	        }
+	        return usuario;
+	    } catch (HttpClientErrorException.NotFound e) {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado");
+	    } catch (RestClientException | IllegalStateException e) {
+	        throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE, "usuario-service indisponível");
+	    }
 	}
+
 }

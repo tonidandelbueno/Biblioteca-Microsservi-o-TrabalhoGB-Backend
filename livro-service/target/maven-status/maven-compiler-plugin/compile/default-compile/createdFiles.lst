@@ -1,0 +1,8 @@
+com\biblioteca\livro\config\OpenApiConfig.class
+com\biblioteca\livro\dto\LivroResponse.class
+com\biblioteca\livro\service\LivroService.class
+com\biblioteca\livro\repository\LivroRepository.class
+com\biblioteca\livro\dto\LivroRequest.class
+com\biblioteca\livro\model\Livro.class
+com\biblioteca\livro\LivroApplication.class
+com\biblioteca\livro\controller\LivroController.class

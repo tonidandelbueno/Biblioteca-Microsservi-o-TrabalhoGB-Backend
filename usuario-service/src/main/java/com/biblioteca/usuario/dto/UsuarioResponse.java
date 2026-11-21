@@ -1,11 +1,36 @@
 package com.biblioteca.usuario.dto;
 
 import com.biblioteca.usuario.model.Usuario;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-// Dados que saem na resposta (repare: SEM a senha)
-public record UsuarioResponse(Long id, String nome, String email) {
+@Schema(description = "Informações públicas de um usuário cadastrado")
+public record UsuarioResponse(
 
-	public static UsuarioResponse from(Usuario u) {
-		return new UsuarioResponse(u.getId(), u.getNome(), u.getEmail());
-	}
+    @Schema(
+        description = "Identificador único do usuário",
+        example = "1"
+    )
+    Long id,
+
+    @Schema(
+        description = "Nome do usuário",
+        example = "João Silva"
+    )
+    String nome,
+
+    @Schema(
+        description = "E-mail cadastrado",
+        example = "joao@exemplo.com"
+    )
+    String email
+
+) {
+
+    public static UsuarioResponse from(Usuario u) {
+        return new UsuarioResponse(
+            u.getId(),
+            u.getNome(),
+            u.getEmail()
+        );
+    }
 }

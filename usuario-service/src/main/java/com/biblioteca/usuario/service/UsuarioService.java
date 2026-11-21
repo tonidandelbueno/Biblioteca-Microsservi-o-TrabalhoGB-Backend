@@ -68,23 +68,28 @@ public class UsuarioService {
 	    Usuario usuario = buscarEntidade(id);
 	    boolean possuiEmprestimos =
 	        emprestimoClient.existeEmprestimoParaUsuario(id);
-	    if (possuiEmprestimos) {
-	        throw new ResponseStatusException(
-	            HttpStatus.CONFLICT,
-	            "Usuário possui empréstimos registrados"
-	        );
+	    if (possuiEmprestimos) {throw new ResponseStatusException(HttpStatus.CONFLICT,"Usuário possui empréstimos registrados");
 	    }
 	    repository.delete(usuario);
 	}
 
 	public TokenResponse login(LoginRequest req) {
-		Usuario u = repository.findByEmail(req.email())
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos"));
-		if (req.senha() == null || !passwordEncoder.matches(req.senha(), u.getSenha())) {
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos");
-		}
-		return new TokenResponse(jwtService.generateToken(u.getEmail()));
+	    if (req == null ||
+	        req.email() == null || req.email().isBlank() ||
+	        req.senha() == null || req.senha().isBlank()) {
+	        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"E-mail ou senha inválidos");
+	    }
+	
+	    Usuario u = repository.findByEmail(req.email())
+	        .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED,"E-mail ou senha inválidos"));
+	
+	    if (!passwordEncoder.matches(req.senha(), u.getSenha())) {
+	        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"E-mail ou senha inválidos");
+	    }
+	
+	    return new TokenResponse(jwtService.generateToken(u.getEmail()));
 	}
+
 
 	public boolean tokenValido(String token) {
 		return jwtService.isValid(token);
@@ -96,9 +101,12 @@ public class UsuarioService {
 	}
 
 	private void validar(UsuarioRequest req) {
-		if (req.nome() == null || req.nome().isBlank() || req.email() == null || req.email().isBlank()
-				|| req.senha() == null || req.senha().isBlank()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "nome, email e senha são obrigatórios");
-		}
+	    if (req == null ||
+	        req.nome() == null || req.nome().isBlank() ||
+	        req.email() == null || req.email().isBlank() ||
+	        req.senha() == null || req.senha().isBlank()) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"nome, email e senha são obrigatórios");
+	    }
 	}
+
 }

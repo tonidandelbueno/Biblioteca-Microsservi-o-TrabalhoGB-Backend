@@ -1,0 +1,13 @@
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\client\LivroClient.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\client\UsuarioClient.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\config\OpenApiConfig.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\controller\EmprestimoController.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\dto\EmprestimoRequest.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\dto\EmprestimoResponse.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\dto\LivroDto.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\dto\UsuarioDto.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\EmprestimoApplication.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\model\Emprestimo.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\model\StatusEmprestimo.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\repository\EmprestimoRepository.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\emprestimo-service\src\main\java\com\biblioteca\emprestimo\service\EmprestimoService.java

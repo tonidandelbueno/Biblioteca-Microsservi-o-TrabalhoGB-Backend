@@ -95,8 +95,14 @@ public class LivroService {
 	}
 
 	private void validar(LivroRequest req) {
-		if (req.titulo() == null || req.titulo().isBlank() || req.autor() == null || req.autor().isBlank()) {
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "titulo e autor são obrigatórios");
-		}
+	    if (req == null ||
+	        req.titulo() == null || req.titulo().isBlank() ||
+	        req.autor() == null || req.autor().isBlank()) {
+	
+	        throw new ResponseStatusException(
+	            HttpStatus.BAD_REQUEST,
+	            "titulo e autor são obrigatórios"
+	        );
+	    }
 	}
 }

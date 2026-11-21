@@ -1,0 +1,13 @@
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\client\EmprestimoClient.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\config\OpenApiConfig.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\controller\UsuarioController.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\dto\LoginRequest.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\dto\TokenResponse.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\dto\UsuarioRequest.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\dto\UsuarioResponse.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\model\Usuario.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\repository\UsuarioRepository.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\SecurityConfig.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\service\JwtService.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\service\UsuarioService.java
+C:\Users\david\Downloads\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\Biblioteca-Microsservi-o-TrabalhoGB-Backend-main\usuario-service\src\main\java\com\biblioteca\usuario\UsuarioApplication.java

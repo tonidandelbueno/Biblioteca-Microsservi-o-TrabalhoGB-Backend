@@ -1,0 +1,13 @@
+com\biblioteca\emprestimo\client\UsuarioClient.class
+com\biblioteca\emprestimo\EmprestimoApplication.class
+com\biblioteca\emprestimo\model\StatusEmprestimo.class
+com\biblioteca\emprestimo\service\EmprestimoService.class
+com\biblioteca\emprestimo\controller\EmprestimoController.class
+com\biblioteca\emprestimo\dto\EmprestimoResponse.class
+com\biblioteca\emprestimo\repository\EmprestimoRepository.class
+com\biblioteca\emprestimo\dto\LivroDto.class
+com\biblioteca\emprestimo\dto\UsuarioDto.class
+com\biblioteca\emprestimo\model\Emprestimo.class
+com\biblioteca\emprestimo\client\LivroClient.class
+com\biblioteca\emprestimo\config\OpenApiConfig.class
+com\biblioteca\emprestimo\dto\EmprestimoRequest.class

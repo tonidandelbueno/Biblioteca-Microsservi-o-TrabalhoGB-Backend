@@ -36,12 +36,12 @@ public class EmprestimoService {
 
 	public EmprestimoResponse emprestar(EmprestimoRequest req) {
 	
-	    if (req.usuarioId() == null || req.livroId() == null) {
-	        throw new ResponseStatusException(
-	            HttpStatus.BAD_REQUEST,
-	            "usuarioId e livroId são obrigatórios"
-	        );
-	    }
+		if (req == null ||
+		    req.usuarioId() == null ||
+		    req.livroId() == null) {
+		    throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"usuarioId e livroId são obrigatórios");
+		}
+
 	
 	    // Verifica a existência do usuário
 	    usuarioClient.buscar(req.usuarioId());
