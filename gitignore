@@ -1,0 +1,15 @@
+# Maven / Java: arquivos gerados na compilacao
+**/target/
+*.class
+
+# Eclipse: dados locais do workspace (nao exclui .project, .classpath ou .settings)
+.metadata/
+
+# Logs e arquivos locais do H2
+*.log
+*.mv.db
+*.trace.db
+
+# Arquivos temporarios do sistema operacional
+.DS_Store
+Thumbs.db
